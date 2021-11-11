@@ -12,7 +12,7 @@ public enum TileStates
 public class TileState : MonoBehaviour, IPointerClickHandler
 {
 	public SpriteRenderer spriteRenderer;
-	TileStates state;
+	public TileStates state;
 	public BoardManager boardManager;
 	public int x;
 	public int y;
@@ -31,11 +31,16 @@ public class TileState : MonoBehaviour, IPointerClickHandler
 
 	private void OnMouseOver()
 	{
-		if (state.Equals(TileStates.Empty))
+		if (boardManager.selection != null)
 		{
-			spriteRenderer.color = Color.green;
-		} else {
-			spriteRenderer.color = Color.red;
+			if (boardManager.IsValidTile(x, y))
+			{
+				spriteRenderer.color = Color.green;
+			}
+			else
+			{
+				spriteRenderer.color = Color.red;
+			}
 		}
 	}
 
@@ -51,6 +56,9 @@ public class TileState : MonoBehaviour, IPointerClickHandler
 
 	public void OnPointerClick(PointerEventData eventData)
 	{
-		boardManager.onPlayerClickTile(x, y);
+		if (boardManager.selection != null && boardManager.IsValidTile(x, y))
+		{
+			boardManager.onPlayerClickTile(x, y);
+		}
 	}
 }
